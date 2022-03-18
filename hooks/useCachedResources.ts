@@ -20,6 +20,7 @@ export default function useCachedResources() {
           'poppins-regular': require('../assets/fonts/Poppins-Regular.ttf'),
           'poppins-semi-bold': require('../assets/fonts/Poppins-SemiBold.ttf'),
           'poppins-thin': require('../assets/fonts/Poppins-Thin.ttf'),
+          'roboto-condensed-bold': require('../assets/fonts/RobotoCondensed-Bold.ttf'),
         });
       } catch (e) {
         // We might want to provide this error information to an error reporting service

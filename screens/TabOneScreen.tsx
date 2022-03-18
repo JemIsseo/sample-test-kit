@@ -1,17 +1,51 @@
 import React from "react";
-import { View, Image, Text, Dimensions, TextInput } from "react-native";
+import { View, Image, Text, Dimensions, TextInput,StyleSheet, Alert } from "react-native";
 import LottieView from 'lottie-react-native';
+import { processFontFamily } from "expo-font";
+import { Button } from "react-native-elements";
 
 
 export default function TabOneScreen() {
+  const [email,setEmailText] = React.useState<string>("");
+  const [password,setPassword] = React.useState<string>("");
+  
+
+  const handleAlertMessage = () => {
+    const Email_address = "jeremiahcancino04@gmail.com";
+    const Password = "krasskita";
+
+    Alert.alert("Message", "Do you want to save your password?",
+              [
+                {
+                  text:"Save password",
+                  style: "default",
+                  onPress: () => {if(email==Email_address && password==Password){
+                    Alert.alert("Login", "Login Successfully");
+                  }
+                  else{
+                    Alert.alert("Error", "Incorrect email or password");
+                  }
+                    console.log("Saved")
+                  }
+                },
+                {
+                  text:"Never",
+                  style: "default",
+                  onPress: () => {if(email==Email_address && password==Password){
+                    Alert.alert("Login", "Login Successfully");
+                  }
+                  else{
+                    Alert.alert("Error", "Incorrect email or password");
+                  }
+                    console.log("Not saved")
+                  }
+                }
+              ]
+              );
+  }
   return (
     <View
-      style={{
-        flex: 1,
-        backgroundColor: '#05435b',
-        justifyContent: 'center',
-        paddingHorizontal: 20
-      }}
+      style={style.container}
     >
       <View style={{
         flex: 1,
@@ -36,43 +70,32 @@ export default function TabOneScreen() {
         <View style={{
           flex: 0
         }}>
-          
-          <View style={{
-            height: 40,
-            width: '100%',
-            marginBottom: 20,
-           
-            borderRadius: 20, backgroundColor: '#798bb3'
-          }}>
-             <TextInput
-  placeholder="EMAIL OR USERNAME" style={{
-    flex:1,paddingTop: 2,
-    paddingLeft: 15,
-    fontSize: 15}}
-  />
-        
-          </View>
-        </View>
-
-        <View style={{
-          flex: 0,
-          marginBottom: 20
-        }}>
+           <Text style={style.textStyle}>
+              Email
+              </Text>
          
-         <View style={{
-            height: 40,
-            width: '100%',
-            borderRadius: 20, backgroundColor: '#798bb3'
-            
-          }}>
-<TextInput
-  placeholder="PASSWORD" style={{
-    flex:1,paddingTop: 2,
-    paddingLeft: 15,
-    fontSize: 15}}
-  />
-          </View>
+           
+           <TextInput
+          style={style.input}
+        onChangeText={setEmailText}
+          value={email}
+          keyboardType={"email-address"}
+          placeholder ={"YOUR EMAIL ADDRESS"}
+          autoCapitalize={"none"}
+          />
+        
         </View>
+           <Text style={style.textStyle}>
+              Password
+              </Text>
+              <TextInput
+          style={style.input}
+        onChangeText={setPassword}
+          value={password}
+          placeholder ={"YOUR PASSWORD"}
+          secureTextEntry={true}
+          />
+       
 
         <View style={{
           flex: 0,
@@ -81,22 +104,24 @@ export default function TabOneScreen() {
           <View style={{
             flex: 0
           }}>
-            <View style={{
-              height: 45,
+           < Button
+            title={"LOGIN"}
+            titleStyle={{
+              fontSize: 15, 
+              fontFamily: 'RobotoCondensed-Bold',
+              color: '#dae0e4'
+            }}
+            buttonStyle={{
+              backgroundColor: '#2381EE',
+              height: 50,
               width: '100%',
               justifyContent: 'center',
               alignItems: 'center',
-              borderRadius: 20,
-              backgroundColor: '#5f62ed'
-              
-            }}>
-              <Text style={{
-                fontSize: 18,
-                color: '#fff'
-              }}>
-                LOGIN
-              </Text>
-            </View>
+              borderRadius: 10,
+            }}
+            type={"solid"}
+            onPress={handleAlertMessage}
+           />
           </View>
         </View>
 
@@ -110,23 +135,41 @@ export default function TabOneScreen() {
         borderRadius: 10,
         paddingBottom: 20
       }}>
-        <Text style={{
-          fontSize: 18,color:'#dae0e4'
-        }}>
-          Create an account? { }
+       
           <Text style={{
             color:'#ed5f62'
           }}>Sign up now</Text>
-        </Text>
-        <Text style={{
-          fontSize: 18,color:'#dae0e4'
-        }}>
-          Forgot your password? { }
+
+
           <Text style={{
             color:'#ed5f62'
           }}>Reset Password</Text>
-        </Text>
+       
       </View>
     </View>
   );
 }
+
+
+const style = StyleSheet.create({
+container: {
+  flex: 1,
+  backgroundColor: '#05435b',
+  paddingHorizontal:20,
+  justifyContent:'center'
+},
+textStyle: {
+  fontSize: 15, fontFamily: 'RobotoCondensed-Bold',
+  paddingLeft:5,
+  color:'#dae0e4'
+},
+input:{
+  height: 40,
+  width: '100%',
+  marginBottom: 20,
+  borderRadius: 10, 
+  backgroundColor: '#798bb3',
+  padding: 10,
+  fontSize: 15
+}
+});

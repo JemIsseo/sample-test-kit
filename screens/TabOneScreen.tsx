@@ -1,14 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, Image, Text, Dimensions, TextInput,StyleSheet, Alert } from "react-native";
 import LottieView from 'lottie-react-native';
 import { processFontFamily } from "expo-font";
-import { Button } from "react-native-elements";
+import { Button} from "react-native-elements";
 
 
 export default function TabOneScreen() {
+  const [fname,setFname] = React.useState<string>("");
+  const [lname,setLname] = React.useState<string>("");
   const [email,setEmailText] = React.useState<string>("");
   const [password,setPassword] = React.useState<string>("");
-  
+  const [cpassword,setCPassword] = React.useState<string>("");
+
 
   const handleAlertMessage = () => {
     const Email_address = "jeremiahcancino04@gmail.com";
@@ -65,12 +68,33 @@ export default function TabOneScreen() {
         />
       </View>
       <View style={{
-        flex: 1,
+        flex: 2,
       }}>
-        <View style={{
-          flex: 0
-        }}>
            <Text style={style.textStyle}>
+              First Name
+              </Text>
+         
+           
+           <TextInput
+          style={style.input}
+        onChangeText={setFname}
+          value={fname}
+          keyboardType={"default"}
+          placeholder ={"YOUR FIRST NAME"}
+          autoCapitalize={"none"}
+          />
+
+           <Text style={style.textStyle}>
+              Last Name
+              </Text>
+              <TextInput
+          style={style.input}
+        onChangeText={setLname}
+          value={lname}
+          placeholder ={"YOUR LAST NAME"}
+          secureTextEntry={true}
+          />
+       <Text style={style.textStyle}>
               Email
               </Text>
          
@@ -83,10 +107,8 @@ export default function TabOneScreen() {
           placeholder ={"YOUR EMAIL ADDRESS"}
           autoCapitalize={"none"}
           />
-        
-        </View>
-           <Text style={style.textStyle}>
-              Password
+          <Text style={style.textStyle}>
+              Confirm Password
               </Text>
               <TextInput
           style={style.input}
@@ -95,7 +117,16 @@ export default function TabOneScreen() {
           placeholder ={"YOUR PASSWORD"}
           secureTextEntry={true}
           />
-       
+          <Text style={style.textStyle}>
+              Password
+              </Text>
+              <TextInput
+          style={style.input}
+        onChangeText={setCPassword}
+          value={cpassword}
+          placeholder ={"CONFIRM PASSWORD"}
+          secureTextEntry={true}
+          />
 
         <View style={{
           flex: 0,
@@ -105,7 +136,7 @@ export default function TabOneScreen() {
             flex: 0
           }}>
            < Button
-            title={"LOGIN"}
+            title={"SUBMIT"}
             titleStyle={{
               fontSize: 15, 
               fontFamily: 'RobotoCondensed-Bold',
@@ -117,35 +148,21 @@ export default function TabOneScreen() {
               width: '100%',
               justifyContent: 'center',
               alignItems: 'center',
-              borderRadius: 10,
+              borderRadius: 10, marginTop:20
             }}
             type={"solid"}
             onPress={handleAlertMessage}
            />
+        
+        
+         
+           
+           
           </View>
         </View>
 
       </View>
-      <View style={{
-        height: 50,
-        width: '100%',
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginBottom: 35,
-        borderRadius: 10,
-        paddingBottom: 20
-      }}>
-       
-          <Text style={{
-            color:'#ed5f62'
-          }}>Sign up now</Text>
-
-
-          <Text style={{
-            color:'#ed5f62'
-          }}>Reset Password</Text>
-       
-      </View>
+     
     </View>
   );
 }
@@ -171,5 +188,6 @@ input:{
   backgroundColor: '#798bb3',
   padding: 10,
   fontSize: 15
-}
+},
+
 });

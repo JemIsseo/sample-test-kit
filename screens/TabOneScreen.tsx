@@ -1,53 +1,62 @@
-import React, { useState } from "react";
-import { View, Image, Text, Dimensions, TextInput,StyleSheet, Alert } from "react-native";
+import React, { useEffect, useState } from "react";
+import { View, Image, Text, Dimensions, TextInput,StyleSheet, Alert, ScrollView } from "react-native";
 import LottieView from 'lottie-react-native';
 import { processFontFamily } from "expo-font";
 import { Button} from "react-native-elements";
 
+import ViewWithLoading from "../components/ViewWithLoading";
+import * as yup from 'yup';
+import {Formik} from "formik";
+
+
 
 export default function TabOneScreen() {
-  const [fname,setFname] = React.useState<string>("");
-  const [lname,setLname] = React.useState<string>("");
-  const [email,setEmailText] = React.useState<string>("");
-  const [password,setPassword] = React.useState<string>("");
-  const [cpassword,setCPassword] = React.useState<string>("");
+  const [fname,setFname] = useState<string>("");
+  const [lname,setLname] = useState<string>("");
+  //const [email,setEmailText] = useState<string>("");
+  //const [password,setPassword] = useState<string>("");
+  //const [cpassword,setCPassword] = useState<string>("");
+  const [loading,setLoading] = useState(true);
 
 
   const handleAlertMessage = () => {
-    const Email_address = "jeremiahcancino04@gmail.com";
-    const Password = "krasskita";
 
-    Alert.alert("Message", "Do you want to save your password?",
-              [
-                {
-                  text:"Save password",
-                  style: "default",
-                  onPress: () => {if(email==Email_address && password==Password){
-                    Alert.alert("Login", "Login Successfully");
-                  }
-                  else{
-                    Alert.alert("Error", "Incorrect email or password");
-                  }
-                    console.log("Saved")
-                  }
-                },
-                {
-                  text:"Never",
-                  style: "default",
-                  onPress: () => {if(email==Email_address && password==Password){
-                    Alert.alert("Login", "Login Successfully");
-                  }
-                  else{
-                    Alert.alert("Error", "Incorrect email or password");
-                  }
-                    console.log("Not saved")
-                  }
-                }
-              ]
-              );
+    Alert.alert("Message", "Register Successfully");
   }
+
+  useEffect(() => {
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+
+    }, 3000);
+  }, [])
+
+  const registerSchema = yup.object({
+    email: yup.string().required('Email is Required').matches(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/, 'Invalid Email'),
+    password: yup.string().required('Password is Required')
+
+    
+  })
+
   return (
-    <View
+    <ScrollView 
+    contentContainerStyle={{flexGrow:1}}
+    scrollEnabled={false}
+    >
+   <ViewWithLoading  loading = {loading}>
+      <Formik
+      initialValues={{
+          email: '',
+          password: ''
+      }}  
+      onSubmit={(values, action) =>{
+        console.log(values);
+      }}
+      validationSchema ={registerSchema}
+      >
+          {({   handleChange, values, errors, touched, handleSubmit}) => ( 
+    <View 
       style={style.container}
     >
       <View style={{
@@ -67,15 +76,10 @@ export default function TabOneScreen() {
           }}
         />
       </View>
-      <View style={{
-        flex: 2,
-      }}>
-           <Text style={style.textStyle}>
+      <Text style={style.textStyle}>
               First Name
               </Text>
-         
-           
-           <TextInput
+              <TextInput
           style={style.input}
         onChangeText={setFname}
           value={fname}
@@ -84,7 +88,7 @@ export default function TabOneScreen() {
           autoCapitalize={"none"}
           />
 
-           <Text style={style.textStyle}>
+              <Text style={style.textStyle}>
               Last Name
               </Text>
               <TextInput
@@ -92,42 +96,48 @@ export default function TabOneScreen() {
         onChangeText={setLname}
           value={lname}
           placeholder ={"YOUR LAST NAME"}
-          secureTextEntry={true}
           />
+      
+     
        <Text style={style.textStyle}>
               Email
               </Text>
-         
-           
            <TextInput
+           
           style={style.input}
-        onChangeText={setEmailText}
-          value={email}
+        onChangeText={handleChange('email')}
+          value={values.email}
           keyboardType={"email-address"}
           placeholder ={"YOUR EMAIL ADDRESS"}
           autoCapitalize={"none"}
+          error = {errors.email !== undefined}            
           />
-          <Text style={style.textStyle}>
-              Confirm Password
-              </Text>
-              <TextInput
-          style={style.input}
-        onChangeText={setPassword}
-          value={password}
-          placeholder ={"YOUR PASSWORD"}
-          secureTextEntry={true}
-          />
+         {errors.email && 
+            <Text style={{paddingBottom:10,color: 'red'}}>
+              {errors.email}
+            </Text>
+        }
+        
           <Text style={style.textStyle}>
               Password
               </Text>
               <TextInput
           style={style.input}
-        onChangeText={setCPassword}
-          value={cpassword}
-          placeholder ={"CONFIRM PASSWORD"}
+        onChangeText={handleChange('password')}
+          value={values.password}
+          placeholder ={"YOUR PASSWORD"}
           secureTextEntry={true}
+          error = {errors.password !== undefined}            
           />
+         {errors.password && 
+            <Text style={{paddingBottom:40,color: 'red'}}>
+              {errors.password}
+            </Text>
+        }
 
+      
+
+         
         <View style={{
           flex: 0,
         }}>
@@ -136,7 +146,10 @@ export default function TabOneScreen() {
             flex: 0
           }}>
            < Button
+           
             title={"SUBMIT"}
+            type={"solid"}
+            onPress={handleAlertMessage}
             titleStyle={{
               fontSize: 15, 
               fontFamily: 'RobotoCondensed-Bold',
@@ -148,10 +161,9 @@ export default function TabOneScreen() {
               width: '100%',
               justifyContent: 'center',
               alignItems: 'center',
-              borderRadius: 10, marginTop:20
+              borderRadius: 10, marginBottom:40
             }}
-            type={"solid"}
-            onPress={handleAlertMessage}
+            
            />
         
         
@@ -160,10 +172,11 @@ export default function TabOneScreen() {
            
           </View>
         </View>
-
       </View>
-     
-    </View>
+          ) }   
+      </Formik>
+   </ViewWithLoading>
+   </ScrollView>
   );
 }
 

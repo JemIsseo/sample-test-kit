@@ -103,7 +103,7 @@ export default function TabOneScreen() {
               Email
               </Text>
            <TextInput
-           
+          
           style={style.input}
         onChangeText={handleChange('email')}
           value={values.email}
